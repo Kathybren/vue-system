@@ -19,7 +19,8 @@
 ## 准备工作完成后就可以开始vue-cli项目
 在硬盘上找一个文件夹放工程用的。这里有两种方式指定到相关目录：①cd 目录路径 ②如果以安装git的，在相关目录右键选择Git Bash Here
 1.vue init webpack vue-system 通过webpack初始化一个项目，根据提示做出相应的选择，个人建议安装vue-router、ESLint(代码规范，建议养成习惯)
-2.
+  
+  2.
 ```
 cd vue-system
 npm install
@@ -27,3 +28,86 @@ npm run dev
 ```
   
   ![](https://raw.githubusercontent.com/Kathybren/img/master/images/QQ%E6%88%AA%E5%9B%BE20171110155148.png)
+
+3.恭喜你已经成功一大步
+## 配置脚手架
+
+1.打开.eslintrc文件，在rules下配置
+```
+'eol-last': 0, //不检测文件末尾有空行
+'space-before-function-paren': 0
+```
+2.如果需要使用scss可
+```
+npm install node-sass --save-dev
+npm install sass-loader --save-dev
+```
+3.引入Element ui
+
+##从登陆页开始
+###创建登陆页面
+```
+cd src
+mkdir pages
+touch ./pages/Login.vue
+```
+
+```src/pages/Login.vue````
+
+```
+<template>
+    <div>
+        Login
+    </div>
+</template>
+```
+
+注意template下只能有一个根
+2.配置路由
+首先删除脚手架自带的组件
+cd App.vue删除多余项，剩余
+
+```
+<template>
+  <div id="app">
+    <router-view/>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'app'
+}
+</script>
+```
+
+然后进入router下的index.js删除多余项剩下
+
+```src/router/index.js````
+```
+import Vue from 'vue'
+import Router from 'vue-router'
+
+Vue.use(Router)
+
+export default new Router({
+  routes: [
+  ]
+})
+```
+ok一切准备就绪
+
+引入Login组件，然后配置路由
+
+```
+import Login from '../pages/Login'
+
+routes: [
+    {
+      path: '/',
+      name: 'Login',
+      component: Login
+    }
+  ]
+
+然后 `npm run dev`你会发下浏览器出现Login
