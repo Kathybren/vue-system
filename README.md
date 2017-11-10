@@ -1,6 +1,6 @@
 ## 环境搭建
 1. 安装Node.js,从[node.js官网](https://nodejs.org/zh-cn/)根据自己的需求对应下载并安装，很简单过程不赘述，安装完成之后，打开命令行工具(win+r，然后输入cmd)，输入 node -v，如下图，如果出现相应的版本号，则说明安装成功。
-[](https://raw.githubusercontent.com/Kathybren/img/master/images/3868852-e27ffe7726909c64.png =100x100)
+[](https://raw.githubusercontent.com/Kathybren/img/master/images/3868852-e27ffe7726909c64.png)
 说明一下官网下载安装node.js后，就已经自带npm（包管理工具）了，另需要注意的是node版本要高于4.0，npm的版本最好是3.x.x以上，以免对后续产生影响。
 2. 安装webpack，打开命令行工具输入：npm install webpack -g，安装完成之后输入 webpack -v，如下图，如果出现相应的版本号，则说明安装成功。
 说明一下，由于很多都是国外的，如果网速比较慢可以安装淘宝镜像（不懂可自行百度）
@@ -12,3 +12,4 @@
     npm install
     npm run dev`
 这时候看到
+![](https://raw.githubusercontent.com/Kathybren/img/master/images/3868852-e27ffe7726909c64.png)
