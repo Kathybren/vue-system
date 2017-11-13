@@ -43,16 +43,29 @@ npm install node-sass --save-dev
 npm install sass-loader --save-dev
 ```
 3.引入Element ui
+```
+npm i element-ui -S
+```
 
-##从登陆页开始
-###创建登陆页面
+配置element-ui。在src下的main.js引入element-ui
+`src/main.js```
+
+```
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+
+Vue.use(ElementUI)
+```
+## 从登陆页开始
+### 创建登陆页面
+
 ```
 cd src
 mkdir pages
 touch ./pages/Login.vue
 ```
 
-```src/pages/Login.vue````
+`src/pages/Login.vue```
 
 ```
 <template>
@@ -63,9 +76,10 @@ touch ./pages/Login.vue
 ```
 
 注意template下只能有一个根
-2.配置路由
+  
+  2.配置路由
 首先删除脚手架自带的组件
-cd App.vue删除多余项，剩余
+进入src下的App.vue，删除多余项，剩余
 
 ```
 <template>
@@ -83,7 +97,7 @@ export default {
 
 然后进入router下的index.js删除多余项剩下
 
-```src/router/index.js````
+```src/router/index.js```
 ```
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -109,5 +123,490 @@ routes: [
       component: Login
     }
   ]
+```
 
-然后 `npm run dev`你会发下浏览器出现Login
+然后 ```npm run dev```你会发下浏览器出现Login
+填充登陆页面
+template部分
+```
+<div class="login">
+			<div class="login-wrap">
+				<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="demo-ruleForm">
+					<el-form-item prop="username">
+							<el-input v-model="ruleForm.username" placeholder="username"></el-input>
+					</el-form-item>
+					<el-form-item prop="password">
+							<el-input type="password" placeholder="password" v-model="ruleForm.password" @keyup.enter.native="submitForm('ruleForm')"></el-input>
+					</el-form-item>
+					<div class="login-btn">
+							<el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+					</div>
+					<p style="font-size:12px;line-height:30px;color:#999;">Tips : 用户名和密码随便填。</p>
+				</el-form>
+			</div>
+    </div>
+```
+script部分
+```
+<script>
+export default {
+  data() {
+    return {
+      ruleForm: {
+        username: '',
+        password: ''
+      },
+      rules: {
+        username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+      }
+    }
+  },
+  methods: {
+    submitForm(formName) {
+      const self = this
+      self.$refs[formName].validate(valid => {
+        if (valid) {
+          localStorage.setItem('ms_username', self.ruleForm.username)
+          self.$router.push('/readme')
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    }
+  }
+}
+</script>
+```
+样式部分
+```
+<style lang="scss" scoped>
+	.login{
+		position: absolute;
+		width:100%;
+		height:100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		.login-wrap{
+			width:300px;
+		  height:160px;
+			padding:40px;
+			border-radius: 5px;
+			background: #fff;
+			.login-btn{
+        text-align: center;
+    }
+    .login-btn button{
+        width:100%;
+        height:36px;
+    	}
+    }
+  }
+</style>
+```
+这时浏览器会出现
+### 开始内容部分
+首先内容区会分成3个部分头部、侧边栏和显示内容区域
+在src下的components建立Header、Home、Slider组件
+```
+touch ./src/components/Header.vue
+touch ./src/components/Home.vue
+touch ./src/components/Slider.vue
+```
+编写Header组件
+```src/components/Header.vue```
+template部分
+```
+<template>
+   <div class="header">
+    <div class="logo">后台管理系统V1.0</div>
+    <div class="user-info">
+      <el-dropdown trigger="click" @command="handleCommand">
+        <span class="el-dropdown-link">
+          <span style="margin-left:8px;margin-right:10px">{{role}} {{name}}</span>
+          <i class="el-icon-caret-bottom"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="personInfo">个人信息</el-dropdown-item>
+          <el-dropdown-item command="loginout">退出</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+  </div>
+</template>
+```
+script部分
+```
+export default {
+  data() {
+    return {
+      role: '管理员',
+      name: localStorage.getItem('username')
+    }
+  },
+  methods: {
+    handleCommand(command) {
+      if (command === 'loginout') {
+        localStorage.removeItem('username')
+        this.$router.push('/login')
+      }
+    }
+  }
+}
+</script>
+```
+样式部分
+```
+<style lang="scss" scoped>
+.header {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 70px;
+  font-size: 22px;
+  line-height: 70px;
+  color: #fff;
+  background: #2E363F;
+  .logo {
+    float: left;
+    width: 250px;
+    text-align: center;
+    font-size: 16px;
+  }
+  .user-info {
+    float: right;
+    padding-right: 50px;
+    font-size: 16px;
+    span {
+      color: #fff;
+    }
+  }
+}
+</style>
+```
+2.编写Slider组件
+```src/components/Slider.vue```
+template部分
+```
+<template>
+  <div class="slider">
+    <el-col :span="12">
+      <el-menu
+        default-active="2"
+        class="el-menu-vertical-demo"
+        @open="handleOpen"
+        @close="handleClose"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+        unique-opened router
+        >
+        <template v-for="item in items" >  
+        <el-menu-item :index="item.index" :key="item.index" v-if="!item.subs">
+          <i class="el-icon-menu"></i>
+          <span slot="title">{{ item.title }}</span>
+        </el-menu-item>
+        <el-submenu v-else :index="item.index" :title="item.title" :key="item.index">
+          <template slot="title">
+            <i class="el-icon-location"></i>
+            <span>{{ item.title }}</span>
+          </template>
+            <el-menu-item class="seam"v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">{{ subItem.title }}</el-menu-item>
+        </el-submenu>
+        </template> 
+      </el-menu>
+    </el-col>
+  </div>
+</template>
+```
+script部分
+```
+<script>
+  export default {
+    data() {
+      return {
+        role: '',
+        titles: [],
+        items: [{
+          icon: 'el-icon-date',
+          index: '/home',
+          title: '简介'
+        },
+        {
+          icon: 'el-icon-date',
+          index: 'axios',
+          title: 'Axios'
+        },
+        {
+          icon: 'el-icon-date',
+          index: '2',
+          title: '基础',
+          subs: [
+            {
+              icon: 'el-icon-date',
+              index: 'base',
+              title: '基础设置'
+            }
+          ]
+        }]
+      }
+    },
+    methods: {
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath)
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath)
+      }
+    }
+  }
+</script>
+```
+说明一下items是想要展示的选项
+样式部分
+```
+<style lang="scss">
+.slider {
+  display: block;
+  position: absolute;
+  width: 200px;
+  left: 0;
+  top: 70px;
+  bottom: 0;
+  background: #2E363F;
+  .el-col-12{
+    width: 100%;
+  }
+}
+</style>
+```
+3.编写Home组件
+```src/components/Home.vue```
+template部分
+```
+<template>
+  <div class="home">
+    <v-head></v-head>
+    <v-sidebar></v-sidebar>
+    <div class="content">
+      <transition name="move" mode="out-in">
+        <router-view></router-view>
+      </transition>
+    </div>
+  </div>
+</template>
+```
+script部分
+```
+import vHead from './Header.vue'
+import vSidebar from './Slider.vue'
+export default {
+  components: {
+    vHead, vSidebar
+  }
+}
+</script>
+```
+样式部分
+```
+<style lang="scss" scoped>
+.home {
+  font-size: 13px;
+  .content {
+    background: none repeat scroll 0 0 #f2f2f2;
+    position: absolute;
+    left: 200px;
+    right: 0;
+    top: 70px;
+    bottom: 0;
+    width: auto;
+    box-sizing: border-box;
+    overflow-y: scroll;
+  }
+}
+</style>
+```
+配置路由
+```
+import Home from '../components/Home'
+{
+  path: '/home',
+  name: 'Home',
+  component: Home
+}
+```
+重启服务
+你会发现
+### 新建各个选项页面
+```src/pages```
+```
+mkdir Base
+mkdir Introduction
+mkdir Axios
+touch ./pages/Base/Base.vue
+touch ./pages/Introduction/Introduction.vue
+touch ./pages/Axios/Axios.vue
+```
+配置路由
+```src/router/index.js```
+```
+import Introduction from '../pages/Introduction/Introduction'
+import Base from '../pages/Base/Base'
+import Axios from '../pages/Axios/Axios'
+```
+```
+ routes: [
+     {
+      path: '/',
+      redirect: '/login'
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
+    },
+    {
+      path: '/home',
+      name: 'Home',
+      component: Home,
+      children: [
+        {
+          path: '/',
+          name: 'Introduction',
+          component: Introduction
+        },
+        {
+          path: '/axios',
+          name: 'Base',
+          component: Base
+        },
+        {
+          path: '/base',
+          name: 'Axios',
+          component: Axios
+        }
+      ]
+    }
+  ]
+  ```
+  配置完成。可以在各个页面填写内容
+  其他就不赘述了，想要什么功能，直接去element-ui拷贝
+  下面主要说明一下Axios
+  1.安装axios
+  ```npm install axios```
+  一般数据请求这块，会统一做个分装
+在src新建api文件夹,然后分别建index.js、confing.js
+```
+mkdir api
+touch ./api/index.js
+touch ./api/config.js
+```
+配置axios
+```src/api/config.js```
+```
+import axios from 'axios'
+import qs from 'qs' // POST传参序列化
+axios.defaults.timeout = 5000
+// axios.defaults.headers.post['Content-Type'] = 'application/x-www=form-urlencoded'
+
+export default {
+  fetchGet(url, params) {
+    return new Promise((resolve, reject) => {
+      axios.get(url, params).then(res => {
+        resolve(res.data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  fetchPost(url, data = {}) {
+    return new Promise((resolve, reject) => {
+      axios.post(url, qs.stringify(data)).then(res => {
+        resolve(res.data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  }
+}
+```
+2.如果请求一个接口怎么办？
+
+一下是在qq音乐上随便找的一个接口
+
+因为存在跨域，这里用代理解决，
+
+打开根目录下的fonfig/index配置一下proxyTable
+```
+proxyTable: {
+      '/api': {
+        target: 'https://c.y.qq.com',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    }
+```
+3.打开src下的api/index.js
+```src/api/index.js```
+```
+import http from './config'
+export const getList = (params) => {
+  return http.fetchPost('/api/v8/fcg-bin/v8.fcg', params)
+}
+```
+4.请求数据
+
+打开Axios文件
+```src/pages/Axios/Axios.vue```
+```
+<template>
+  <div class="axios">
+  <button @click="test">点我看控制台</button>
+  </div>
+</template>
+<script>
+import { getList } from '../../api/index'
+export default {
+  data() {
+    return {
+      list: []
+    }
+  },
+  methods: {
+    test() {
+      // 传递参数
+      let params = {
+        channel: 'singer',
+        page: 'list',
+        key: 'all_all_all',
+        pagesize: 100,
+        pagenum: 1,
+        g_tk: 5381,
+        jsonpCallback: 'GetSingerListCallback',
+        loginUin: 0,
+        hostUin: 0,
+        format: 'jsonp',
+        inCharset: 'utf8',
+        outCharset: 'utf-8',
+        notice: 0,
+        platform: 'yqq',
+        needNewCode: 0
+      }
+      getList(params).then(res => {
+        console.log(res)
+      })
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+.axios{
+  margin: 50px 50px;
+}
+</style>
+```
+点一下看看控制台。
