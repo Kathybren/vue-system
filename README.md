@@ -48,7 +48,8 @@ npm i element-ui -S
 ```
 
 配置element-ui。在src下的main.js引入element-ui
-`src/main.js```
+
+```src/main.js```
 
 ```
 import ElementUI from 'element-ui'
@@ -56,6 +57,22 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(ElementUI)
 ```
+4.重置样式
+在src新建common文件夹，放一些公共样式配置等
+```
+cd common
+mkdir css
+touch ./css/reset.css
+```
+在reset.css里面写重置样式
+然后在main.js引入
+```
+src/main.js
+```
+```
+import './common/css/reset.css'
+```
+先配置这么多，后面面需要什么再根据自己的需求就行配置
 ## 从登陆页开始
 ### 创建登陆页面
 
@@ -65,7 +82,7 @@ mkdir pages
 touch ./pages/Login.vue
 ```
 
-`src/pages/Login.vue```
+```src/pages/Login.vue```
 
 ```
 <template>
@@ -119,6 +136,10 @@ import Login from '../pages/Login'
 routes: [
     {
       path: '/',
+      redirect: '/login'
+    },
+    {
+      path: '/login',
       name: 'Login',
       component: Login
     }
@@ -130,21 +151,21 @@ routes: [
 template部分
 ```
 <div class="login">
-			<div class="login-wrap">
-				<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="demo-ruleForm">
-					<el-form-item prop="username">
-							<el-input v-model="ruleForm.username" placeholder="username"></el-input>
-					</el-form-item>
-					<el-form-item prop="password">
-							<el-input type="password" placeholder="password" v-model="ruleForm.password" @keyup.enter.native="submitForm('ruleForm')"></el-input>
-					</el-form-item>
-					<div class="login-btn">
-							<el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
-					</div>
-					<p style="font-size:12px;line-height:30px;color:#999;">Tips : 用户名和密码随便填。</p>
-				</el-form>
-			</div>
-    </div>
+  <div class="login-wrap">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="demo-ruleForm">
+      <el-form-item prop="username">
+          <el-input v-model="ruleForm.username" placeholder="username"></el-input>
+      </el-form-item>
+      <el-form-item prop="password">
+          <el-input type="password" placeholder="password" v-model="ruleForm.password" @keyup.enter.native="submitForm('ruleForm')"></el-input>
+      </el-form-item>
+      <div class="login-btn">
+          <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+      </div>
+      <p style="font-size:12px;line-height:30px;color:#999;">Tips : 用户名和密码随便填。</p>
+    </el-form>
+  </div>
+</div>
 ```
 script部分
 ```
@@ -207,6 +228,9 @@ export default {
 </style>
 ```
 这时浏览器会出现
+
+![](https://raw.githubusercontent.com/Kathybren/img/master/images/QQ%E6%88%AA%E5%9B%BE20171113131331.png)
+
 ### 开始内容部分
 首先内容区会分成3个部分头部、侧边栏和显示内容区域
 在src下的components建立Header、Home、Slider组件
@@ -365,6 +389,7 @@ script部分
 </script>
 ```
 说明一下items是想要展示的选项
+
 样式部分
 ```
 <style lang="scss">
@@ -384,6 +409,7 @@ script部分
 ```
 3.编写Home组件
 ```src/components/Home.vue```
+
 template部分
 ```
 <template>
@@ -438,7 +464,11 @@ import Home from '../components/Home'
 }
 ```
 重启服务
+
 你会发现
+
+![](https://raw.githubusercontent.com/Kathybren/img/master/images/QQ%E6%88%AA%E5%9B%BE20171113162555.png)
+
 ### 新建各个选项页面
 ```src/pages```
 ```
@@ -478,25 +508,29 @@ import Axios from '../pages/Axios/Axios'
           component: Introduction
         },
         {
-          path: '/axios',
+          path: '/base',
           name: 'Base',
           component: Base
         },
         {
-          path: '/base',
+          path: '/axios',
           name: 'Axios',
           component: Axios
         }
       ]
     }
   ]
-  ```
+```
   配置完成。可以在各个页面填写内容
+
   其他就不赘述了，想要什么功能，直接去element-ui拷贝
+  
   下面主要说明一下Axios
-  1.安装axios
+
+1.安装axios
   ```npm install axios```
-  一般数据请求这块，会统一做个分装
+  
+一般数据请求这块，会统一做个分装
 在src新建api文件夹,然后分别建index.js、confing.js
 ```
 mkdir api
@@ -534,7 +568,7 @@ export default {
 ```
 2.如果请求一个接口怎么办？
 
-一下是在qq音乐上随便找的一个接口
+以下是在qq音乐上随便找的一个接口
 
 因为存在跨域，这里用代理解决，
 
