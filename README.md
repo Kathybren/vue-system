@@ -147,7 +147,9 @@ routes: [
 ```
 
 然后 ```npm run dev```你会发下浏览器出现Login
+
 填充登陆页面
+
 template部分
 ```
 <div class="login">
@@ -188,8 +190,8 @@ export default {
       const self = this
       self.$refs[formName].validate(valid => {
         if (valid) {
-          localStorage.setItem('ms_username', self.ruleForm.username)
-          self.$router.push('/readme')
+          localStorage.setItem('username', self.ruleForm.username)
+          self.$router.push('/home')
         } else {
           console.log('error submit!!')
           return false
@@ -241,6 +243,7 @@ touch ./src/components/Slider.vue
 ```
 编写Header组件
 ```src/components/Header.vue```
+
 template部分
 ```
 <template>
@@ -312,6 +315,7 @@ export default {
 ```
 2.编写Slider组件
 ```src/components/Slider.vue```
+
 template部分
 ```
 <template>
@@ -524,13 +528,15 @@ import Axios from '../pages/Axios/Axios'
   配置完成。可以在各个页面填写内容
 
   其他就不赘述了，想要什么功能，直接去element-ui拷贝
-  
+
   下面主要说明一下Axios
 
 1.安装axios
+
   ```npm install axios```
   
-一般数据请求这块，会统一做个分装
+一般数据请求这块，会统一做个封装
+
 在src新建api文件夹,然后分别建index.js、confing.js
 ```
 mkdir api
@@ -538,6 +544,7 @@ touch ./api/index.js
 touch ./api/config.js
 ```
 配置axios
+
 ```src/api/config.js```
 ```
 import axios from 'axios'
@@ -585,6 +592,7 @@ proxyTable: {
     }
 ```
 3.打开src下的api/index.js
+
 ```src/api/index.js```
 ```
 import http from './config'
@@ -595,6 +603,7 @@ export const getList = (params) => {
 4.请求数据
 
 打开Axios文件
+
 ```src/pages/Axios/Axios.vue```
 ```
 <template>
@@ -644,3 +653,5 @@ export default {
 </style>
 ```
 点一下看看控制台。
+
+OK!基础教程到此结束，如果对你有些许帮助，请不要吝惜你的star
