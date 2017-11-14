@@ -18,9 +18,10 @@
   
 ## 准备工作完成后就可以开始vue-cli项目
 在硬盘上找一个文件夹放工程用的。这里有两种方式指定到相关目录：①cd 目录路径 ②如果以安装git的，在相关目录右键选择Git Bash Here
+
 1.vue init webpack vue-system 通过webpack初始化一个项目，根据提示做出相应的选择，个人建议安装vue-router、ESLint(代码规范，建议养成习惯)
   
-  2.
+2.
 ```
 cd vue-system
 npm install
@@ -32,9 +33,9 @@ npm run dev
 3.恭喜你已经成功一大步
 ## 配置脚手架
 
-1.打开.eslintrc文件，在rules下配置
+1.打开.eslintrc.js文件，在rules下配置
 ```
-'eol-last': 0, //不检测文件末尾有空行
+'eol-last': 0, // 不检测文件末尾有空行
 'space-before-function-paren': 0
 ```
 2.如果需要使用scss可
@@ -47,7 +48,9 @@ npm install sass-loader --save-dev
 npm i element-ui -S
 ```
 
-配置element-ui。在src下的main.js引入element-ui
+配置element-ui。
+
+在src下的main.js引入element-ui
 
 ```src/main.js```
 
@@ -95,8 +98,8 @@ touch ./pages/Login.vue
 注意template下只能有一个根
   
   2.配置路由
-首先删除脚手架自带的组件
-进入src下的App.vue，删除多余项，剩余
+
+进入src下的App.vue，删除删除脚手架自带的组件，剩余如下
 
 ```
 <template>
@@ -146,7 +149,7 @@ routes: [
   ]
 ```
 
-然后 ```npm run dev```你会发下浏览器出现Login
+然后 ```npm run dev```你会发现浏览器出现Login
 
 填充登陆页面
 
@@ -266,6 +269,7 @@ template部分
 ```
 script部分
 ```
+<script>
 export default {
   data() {
     return {
@@ -430,6 +434,7 @@ template部分
 ```
 script部分
 ```
+<script>
 import vHead from './Header.vue'
 import vSidebar from './Slider.vue'
 export default {
@@ -467,7 +472,7 @@ import Home from '../components/Home'
   component: Home
 }
 ```
-重启服务
+重启服务然后登陆
 
 你会发现
 
